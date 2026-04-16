@@ -256,31 +256,31 @@
     <div id="celebration"></div>
 
 <script>
-    // --- DATA STATE V13 ---
+    // --- DATA STATE V14 ---
     const defaultData = {
         kids: [
-            { id: 'jesse', name: 'jessee', icon: '🤠', color: 'var(--jesse)', points: 0, rewardVisual: '🎮', rewardName: 'Kirby Game', rewardTarget: 300 },
-            { id: 'magnolia', name: 'Magnolia', icon: '😻', color: 'var(--magnolia)', points: 0, rewardVisual: 'https://m.media-amazon.com/images/I/81PjFmZ38aL._AC_SL1500_.jpg', rewardName: 'Lego Set', rewardTarget: 300 },
-            { id: 'dahlia', name: 'Dahlia', icon: '🦄', color: 'var(--dahlia)', points: 0, rewardVisual: '🚲', rewardName: 'Bike', rewardTarget: 300 },
-            { id: 'duke', name: 'Duke', icon: '🦖', color: 'var(--duke)', points: 0, rewardVisual: '🍦', rewardName: 'Ice Cream', rewardTarget: 300 }
+            { id: 'jesse', name: 'Jesse', icon: '🤠', color: 'var(--jesse)', points: 0, rewardVisual: '🎮', rewardName: 'Kirby Game', rewardTarget: 50 },
+            { id: 'magnolia', name: 'Magnolia', icon: '😻', color: 'var(--magnolia)', points: 0, rewardVisual: 'https://m.media-amazon.com/images/I/81PjFmZ38aL._AC_SL1500_.jpg', rewardName: 'Lego Set', rewardTarget: 40 },
+            { id: 'dahlia', name: 'Dahlia', icon: '🦄', color: 'var(--dahlia)', points: 0, rewardVisual: '🚲', rewardName: 'Bike', rewardTarget: 100 },
+            { id: 'duke', name: 'Duke', icon: '🦖', color: 'var(--duke)', points: 0, rewardVisual: '🍦', rewardName: 'Ice Cream', rewardTarget: 15 }
         ],
         extendedRoster: [
             { id: 'tyson', name: 'Tyson', icon: '👨', color: 'var(--tyson)' },
             { id: 'sutton', name: 'Sutton', icon: '👩', color: 'var(--sutton)' } 
         ],
         chores: [
-            { id: 1, emoji: '🛏️', name: 'Make Bed', points: 1, recurrence: 1, assignees: ['jessee', 'magnolia', 'dahlia', 'duke'], isExtra: false },
-            { id: 2, emoji: '🪥', name: 'Brush Teeth', points: 1, recurrence: 1, assignees: ['jessee', 'magnolia', 'dahlia', 'duke'], isExtra: false },
+            { id: 1, emoji: '🛏️', name: 'Make Bed', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia', 'dahlia', 'duke'], isExtra: false },
+            { id: 2, emoji: '🪥', name: 'Brush Teeth', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia', 'dahlia', 'duke'], isExtra: false },
             { id: 3, emoji: '🧸', name: 'Pick up Toys', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia', 'dahlia', 'duke'], isExtra: false },
-            { id: 4, emoji: '📚', name: 'Read 20 Minutess', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia', 'dahlia', 'duke'], isExtra: false },
-            { id: 4, emoji: '🎻', name: 'Violin 15 Minutes', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia'], isExtra: false },
-            { id: 4, emoji: '📝', name: 'Homework', points: 1, recurrence: 1, assignees: ['jesse'], isExtra: false },
+            { id: 4, emoji: '📚', name: 'Read 20 Minutes', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia', 'dahlia', 'duke'], isExtra: false },
+            { id: 5, emoji: '🎻', name: 'Violin 15 Minutes', points: 1, recurrence: 1, assignees: ['jesse', 'magnolia'], isExtra: false },
+            { id: 6, emoji: '📝', name: 'Homework', points: 1, recurrence: 1, assignees: ['jesse'], isExtra: false },
             { id: 16, emoji: 'vacuum.png', name: 'Vacuum House', points: 15, recurrence: 7, assignees: [], isExtra: true },
             { id: 26, emoji: '🌿', name: 'Pull Weeds', points: 20, recurrence: 7, assignees: [], isExtra: true },
             { id: 28, emoji: '🪟', name: 'Wash Windows', points: 30, recurrence: 56, assignees: [], isExtra: true },
-            { id: 28, emoji: '🚽', name: 'Clean Toilet', points: 15, recurrence: 14, assignees: [], isExtra: true },
-            { id: 28, emoji: '🚰🪞', name: 'Clean Sink & Mirrors', points: 15, recurrence: 14, assignees: [], isExtra: true },
-            { id: 28, emoji: '🚗', name: 'Wash Car', points: 15, recurrence: 28, assignees: [], isExtra: true }
+            { id: 29, emoji: '🚽', name: 'Clean Toilet', points: 15, recurrence: 14, assignees: [], isExtra: true },
+            { id: 30, emoji: '🚰🪞', name: 'Clean Sink & Mirrors', points: 15, recurrence: 14, assignees: [], isExtra: true },
+            { id: 31, emoji: '🚗', name: 'Wash Car', points: 15, recurrence: 28, assignees: [], isExtra: true }
         ],
         mealChores: [
             { id: 101, emoji: 'set_table.png', name: 'Set Table' },
@@ -289,20 +289,20 @@
             { id: 104, emoji: 'floor.png', name: 'Clean Floor' },
             { id: 105, emoji: 'prayer.png', name: 'Prayer' },
             { id: 12, emoji: '🗑️', name: 'Empty Trash' },
-            { id: 12, emoji: '👨‍🍳', name: 'Help Cook' },
-            { id: 12, emoji: '🧋', name: 'Make Drink' }
+            { id: 13, emoji: '👨‍🍳', name: 'Help Cook' },
+            { id: 14, emoji: '🧋', name: 'Make Drink' }
         ],
         pending: [],
         mealActiveKids: ['jesse', 'magnolia', 'dahlia', 'duke', 'tyson', 'sutton']
     };
 
-    let appData = JSON.parse(localStorage.getItem('choreDataV13')) || defaultData;
+    let appData = JSON.parse(localStorage.getItem('choreDataV14')) || defaultData;
     let currentView = 'kids';
     let editingChoreId = null;
     let editingMealChoreId = null;
 
     function saveData() {
-        localStorage.setItem('choreDataV13', JSON.stringify(appData));
+        localStorage.setItem('choreDataV14', JSON.stringify(appData));
     }
 
     // --- VISUAL RENDER HELPERS ---
@@ -718,7 +718,7 @@
                     </div>
                     <span class="hint-text">💡 Emoji Shortcut: Press <b>Win + .</b> (Windows) or <b>Cmd+Ctrl+Space</b> (Mac)</span>
                     <div class="form-row">
-                        <label><input type="checkbox" id="chk-jesse"> jessee</label>
+                        <label><input type="checkbox" id="chk-jesse"> Jesse</label>
                         <label><input type="checkbox" id="chk-magnolia"> Magnolia</label>
                         <label><input type="checkbox" id="chk-dahlia"> Dahlia</label>
                         <label><input type="checkbox" id="chk-duke"> Duke</label>

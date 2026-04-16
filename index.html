@@ -63,8 +63,15 @@
         }
         .path-avatar, .path-reward { font-size: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;}
         .path-reward-text { font-size: 16px; color: #aaa; margin-top: 5px; font-weight: bold; text-align: center; max-width: 120px; line-height: 1.2;}
-        .stones-track { display: flex; flex-grow: 1; justify-content: space-evenly; margin: 0 20px; }
+        .stones-track { display: flex; flex-grow: 1; justify-content: space-evenly; margin: 0 20px; flex-direction: column; align-items: center;}
+        .stones-row { display: flex; width: 100%; justify-content: space-evenly; }
         
+        /* NEW PROGRESS TEXT STYLING */
+        .progress-text {
+            font-size: 18px; color: #ddd; font-weight: bold; margin-bottom: 15px; background: #222; padding: 5px 15px; border-radius: 20px; border: 1px solid #444;
+        }
+        .progress-text span { color: #FFD166; }
+
         /* Dynamic Image/Emoji Styling */
         .reward-img-large { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); border-radius: 8px;}
         .reward-img-small { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 10px; border: 1px solid #444;}
@@ -126,6 +133,7 @@
         }
 
         .chore-emoji { font-size: 70px; }
+        .chore-img { width: 70px; height: 70px; object-fit: contain;}
         .chore-label { font-size: 20px; font-weight: bold; color: #ccc; text-align: center;}
         .empty-chores { text-align: center; font-size: 24px; color: #666; grid-column: 1 / -1; margin-top: 40px; }
 
@@ -256,7 +264,7 @@
     <div id="celebration"></div>
 
 <script>
-    // --- DATA STATE V14 ---
+    // --- DATA STATE V15 ---
     const defaultData = {
         kids: [
             { id: 'jesse', name: 'Jesse', icon: '🤠', color: 'var(--jesse)', points: 0, rewardVisual: '🎮', rewardName: 'Kirby Game', rewardTarget: 50 },
@@ -279,7 +287,7 @@
             { id: 26, emoji: '🌿', name: 'Pull Weeds', points: 20, recurrence: 7, assignees: [], isExtra: true },
             { id: 28, emoji: '🪟', name: 'Wash Windows', points: 30, recurrence: 56, assignees: [], isExtra: true },
             { id: 29, emoji: '🚽', name: 'Clean Toilet', points: 15, recurrence: 14, assignees: [], isExtra: true },
-            { id: 30, emoji: '🚰🪞', name: 'Clean Sink & Mirrors', points: 15, recurrence: 14, assignees: [], isExtra: true },
+            { id: 30, emoji: '🚰', name: 'Clean Sink & Mirrors', points: 15, recurrence: 14, assignees: [], isExtra: true },
             { id: 31, emoji: '🚗', name: 'Wash Car', points: 15, recurrence: 28, assignees: [], isExtra: true }
         ],
         mealChores: [
@@ -296,13 +304,13 @@
         mealActiveKids: ['jesse', 'magnolia', 'dahlia', 'duke', 'tyson', 'sutton']
     };
 
-    let appData = JSON.parse(localStorage.getItem('choreDataV14')) || defaultData;
+    let appData = JSON.parse(localStorage.getItem('choreDataV15')) || defaultData;
     let currentView = 'kids';
     let editingChoreId = null;
     let editingMealChoreId = null;
 
     function saveData() {
-        localStorage.setItem('choreDataV14', JSON.stringify(appData));
+        localStorage.setItem('choreDataV15', JSON.stringify(appData));
     }
 
     // --- VISUAL RENDER HELPERS ---
@@ -323,6 +331,14 @@
             return `<img src="${visualStr}" class="slot-chore-img" alt="Meal Chore">`;
         }
         return `<span class="slot-chore">${visualStr}</span>`;
+    }
+    
+    function getChoreVisualHtml(visualStr) {
+        if (!visualStr) return '✨';
+        if (visualStr.includes('.') || visualStr.startsWith('http') || visualStr.startsWith('data:image')) {
+            return `<img src="${visualStr}" class="chore-img" alt="Chore">`;
+        }
+        return `<div class="chore-emoji">${visualStr}</div>`;
     }
 
     // --- ROUTER ---
@@ -381,6 +397,12 @@
                 stonesHtml += `<div class="stone"></div>`;
             }
         }
+        
+        // Progress Text String Construction
+        let progressString = `⭐ <span>${kid.points}</span> / ${kid.rewardTarget} pts to goal`;
+        if (pendingPoints > 0) {
+            progressString = `⭐ <span>${kid.points}</span> (+${pendingPoints} pending) / ${kid.rewardTarget} pts to goal`;
+        }
 
         // Setup the Reward Icon
         const isReady = kid.points >= kid.rewardTarget;
@@ -395,7 +417,10 @@
                 <div class="back-btn" onclick="switchView('kids')">🔙</div>
                 <div class="path-container" style="border-color: ${kid.color}">
                     <div class="path-avatar">${kid.icon}</div>
-                    <div class="stones-track">${stonesHtml}</div>
+                    <div class="stones-track">
+                        <div class="progress-text">${progressString}</div>
+                        <div class="stones-row">${stonesHtml}</div>
+                    </div>
                     <div class="${rewardClass}" ${rewardClick}>
                         ${rewardVisualHtml}
                         <div class="path-reward-text">${kid.rewardName}</div>
@@ -425,7 +450,7 @@
                 btn.className = `chore-btn assigned`;
                 btn.innerHTML = `
                     <div class="chore-points">+${chore.points}</div>
-                    <div class="chore-emoji">${chore.emoji}</div>
+                    ${getChoreVisualHtml(chore.emoji)}
                     <div class="chore-label">${chore.name}</div>
                 `;
                 btn.onclick = () => completeChore(kid.id, chore);
@@ -449,7 +474,7 @@
                 btn.className = `chore-btn extra`;
                 btn.innerHTML = `
                     <div class="chore-points">+${chore.points}</div>
-                    <div class="chore-emoji">${chore.emoji}</div>
+                    ${getChoreVisualHtml(chore.emoji)}
                     <div class="chore-label">${chore.name}</div>
                 `;
                 btn.onclick = () => completeChore(kid.id, chore);
@@ -480,7 +505,7 @@
 
         const celeb = document.getElementById('celebration');
         celeb.style.display = 'flex';
-        celeb.innerHTML = `<div style="font-size: 200px;">${chore.emoji}✨</div>`;
+        celeb.innerHTML = `<div style="font-size: 200px;">${getChoreVisualHtml(chore.emoji)}✨</div>`;
         
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -662,7 +687,7 @@
             if(!c.isExtra && c.assignees.length === 0) assignedStr = '<span style="color:#E74C3C">Unassigned</span>';
             
             return `<tr>
-                <td style="font-size: 24px; text-align: center;">${c.emoji}</td>
+                <td style="font-size: 24px; text-align: center;">${getChoreVisualHtml(c.emoji)}</td>
                 <td><strong>${c.name}</strong></td>
                 <td style="color:#FFD166;">+${c.points}</td>
                 <td>${c.recurrence} days</td>
@@ -711,7 +736,7 @@
                 <div class="add-form">
                     <h3 id="form-title" style="margin-top:0; color:#fff;">Add New Chore</h3>
                     <div class="form-row">
-                        <input type="text" id="newEmoji" placeholder="Emoji (e.g. 🐕)" style="width:120px;">
+                        <input type="text" id="newEmoji" placeholder="Emoji (e.g. 🐕) or Image Path" style="width:200px;">
                         <input type="text" id="newName" placeholder="Chore Name">
                         <input type="number" id="newPoints" placeholder="Pts" min="1" value="1" style="width:80px;">
                         <input type="number" id="newRecurrence" placeholder="Days to Repeat" min="1" value="1" style="width:140px;">

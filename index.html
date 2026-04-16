@@ -154,10 +154,14 @@
         .toggle-kid .toggle-icon { font-size: 40px; margin-bottom: 5px; }
         .toggle-kid .toggle-name { font-size: 14px; font-weight: bold; color: #fff;}
         .toggle-kid.active { opacity: 1; border-color: #fff; background: var(--panel); }
-        .meal-assignments { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; text-align: left; }
-        .meal-slot { background: var(--panel); padding: 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #333; }
-        .slot-chore { font-size: 60px; }
-        .slot-assignee { font-size: 70px; background: #000; width: 100px; height: 100px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 3px solid #444;}
+        .meal-assignments { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; text-align: left; }
+        .meal-slot { background: var(--panel); padding: 15px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #333; }
+        
+        /* Updated meal chore visuals */
+        .slot-chore { font-size: 60px; display: inline-block; text-align: center; width: 80px;}
+        .slot-chore-img { width: 80px; height: 80px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.05); padding: 5px; box-sizing: border-box;}
+        .slot-chore-name { font-size: 22px; font-weight: bold; color: #fff; flex-grow: 1; padding-left: 15px;}
+        .slot-assignee { font-size: 70px; background: #000; width: 100px; height: 100px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 3px solid #444; flex-shrink: 0;}
 
         /* Parent Dashboard */
         .parent-section { background: var(--panel); padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #333; }
@@ -208,7 +212,7 @@
     <div id="celebration"></div>
 
 <script>
-    // --- DATA STATE V10 ---
+    // --- DATA STATE V11 ---
     const defaultData = {
         kids: [
             { id: 'jess', name: 'Jesse', icon: '🤠', color: 'var(--jess)', points: 0, rewardVisual: '🎮', rewardName: 'Kirby Game', rewardTarget: 50 },
@@ -234,28 +238,26 @@
             { id: 28, emoji: '🚗', name: 'Wash Car', points: 10, recurrence: 14, assignees: [], isExtra: true }
         ],
         mealChores: [
-            { id: 101, emoji: '🍽️', name: 'Set Table' },
-            { id: 102, emoji: '🥣', name: 'Clear Dishes' },
-            { id: 103, emoji: '🧼', name: 'Wash Dishes' },
-            { id: 104, emoji: '🧽', name: 'Wipe Counters' },
-            { id: 105, emoji: '🧹', name: 'Sweep Floor' },
-            { id: 106, emoji: '🧴', name: 'Wipe Table' },
-            { id: 107, emoji: '🙏', name: 'Prayer' }
+            { id: 101, emoji: 'set_table.jpg', name: 'Set Table' },
+            { id: 102, emoji: 'dishes.png', name: 'Wash Dishes' },
+            { id: 103, emoji: 'wash table.png', name: 'Wipe Table' },
+            { id: 104, emoji: 'floor.jpg', name: 'Clean Floor' },
+            { id: 105, emoji: 'prayer.jpg', name: 'Prayer' }
         ],
         pending: [],
         mealActiveKids: ['jess', 'magnolia', 'dahlia', 'duke', 'tyson', 'sutton']
     };
 
-    let appData = JSON.parse(localStorage.getItem('choreDataV10')) || defaultData;
+    let appData = JSON.parse(localStorage.getItem('choreDataV11')) || defaultData;
     let currentView = 'kids';
     let editingChoreId = null;
     let editingMealChoreId = null;
 
     function saveData() {
-        localStorage.setItem('choreDataV10', JSON.stringify(appData));
+        localStorage.setItem('choreDataV11', JSON.stringify(appData));
     }
 
-    // --- VISUAL RENDER HELPER ---
+    // --- VISUAL RENDER HELPERS ---
     function getRewardHtml(visualStr, sizeClass) {
         if (!visualStr) return '🎁';
         if (visualStr.startsWith('http') || visualStr.startsWith('data:image')) {
@@ -265,6 +267,14 @@
         if (sizeClass === 'reward-img-large') fontSize = '60px';
         if (sizeClass === 'reward-img-massive') fontSize = '150px';
         return `<span style="font-size: ${fontSize}; margin-right: 10px; vertical-align: middle;">${visualStr}</span>`;
+    }
+
+    function getMealVisualHtml(visualStr) {
+        if (!visualStr) return '✨';
+        if (visualStr.includes('.') || visualStr.startsWith('http') || visualStr.startsWith('data:image')) {
+            return `<img src="${visualStr}" class="slot-chore-img" alt="Meal Chore">`;
+        }
+        return `<span class="slot-chore">${visualStr}</span>`;
     }
 
     // --- ROUTER ---
@@ -488,7 +498,10 @@
 
         let slotsHtml = appData.mealChores.map((mc, i) => `
             <div class="meal-slot">
-                <span class="slot-chore" title="${mc.name}">${mc.emoji}</span>
+                <div title="${mc.name}" style="display:flex; align-items:center;">
+                    ${getMealVisualHtml(mc.emoji)}
+                </div>
+                <div class="slot-chore-name">${mc.name}</div>
                 <span class="slot-assignee" id="slot-${i}">❓</span>
             </div>
         `).join('');
@@ -601,7 +614,7 @@
             if(!c.isExtra && c.assignees.length === 0) assignedStr = '<span style="color:#E74C3C">Unassigned</span>';
             
             return `<tr>
-                <td style="font-size: 24px;">${c.emoji}</td>
+                <td style="font-size: 24px; text-align: center;">${c.emoji}</td>
                 <td><strong>${c.name}</strong></td>
                 <td style="color:#FFD166;">+${c.points}</td>
                 <td>${c.recurrence} days</td>
@@ -616,7 +629,7 @@
         // Mealtime Editor Table
         let mealRows = appData.mealChores.map(mc => `
             <tr>
-                <td style="font-size: 24px;">${mc.emoji}</td>
+                <td style="text-align: center;">${getMealVisualHtml(mc.emoji)}</td>
                 <td><strong>${mc.name}</strong></td>
                 <td>
                     <button class="action-btn edit-btn" onclick="editMealChore(${mc.id})">Edit</button>
@@ -679,7 +692,7 @@
                 <div class="add-form">
                     <h3 id="meal-form-title" style="margin-top:0; color:#fff;">Add Mealtime Role</h3>
                     <div class="form-row">
-                        <input type="text" id="newMealEmoji" placeholder="Emoji (e.g. 🍽️)" style="width:120px;">
+                        <input type="text" id="newMealEmoji" placeholder="Emoji or Image Path" style="width:200px;">
                         <input type="text" id="newMealName" placeholder="Role Name">
                     </div>
                     <button class="action-btn" onclick="saveMealChore()" id="save-meal-btn">+ Add Role</button>

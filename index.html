@@ -154,14 +154,58 @@
         .toggle-kid .toggle-icon { font-size: 40px; margin-bottom: 5px; }
         .toggle-kid .toggle-name { font-size: 14px; font-weight: bold; color: #fff;}
         .toggle-kid.active { opacity: 1; border-color: #fff; background: var(--panel); }
-        .meal-assignments { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; text-align: left; }
-        .meal-slot { background: var(--panel); padding: 15px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #333; }
         
-        /* Updated meal chore visuals */
-        .slot-chore { font-size: 60px; display: inline-block; text-align: center; width: 80px;}
-        .slot-chore-img { width: 80px; height: 80px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.05); padding: 5px; box-sizing: border-box;}
-        .slot-chore-name { font-size: 22px; font-weight: bold; color: #fff; flex-grow: 1; padding-left: 15px;}
-        .slot-assignee { font-size: 70px; background: #000; width: 100px; height: 100px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 3px solid #444; flex-shrink: 0;}
+        /* SLEEK NEW MEALTIME AESTHETICS */
+        .meal-assignments { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 20px; 
+            text-align: left; 
+        }
+        .meal-slot { 
+            background: linear-gradient(145deg, #1a1a1a, #111111); 
+            padding: 15px 20px; 
+            border-radius: 16px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border: 1px solid #333;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .slot-chore { 
+            font-size: 60px; 
+            display: inline-block; 
+            text-align: center; 
+            width: 110px;
+        }
+        .slot-chore-img { 
+            width: 110px; 
+            height: 110px; 
+            object-fit: contain; 
+            border-radius: 12px; 
+            background: transparent; 
+        }
+        .slot-chore-name { 
+            font-size: 18px; 
+            font-weight: 500; 
+            color: #e0e0e0; 
+            flex-grow: 1; 
+            padding-left: 20px;
+            letter-spacing: 0.5px;
+        }
+        .slot-assignee { 
+            font-size: 55px; 
+            background: #000; 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            border: 3px solid #444; 
+            flex-shrink: 0;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+        }
 
         /* Parent Dashboard */
         .parent-section { background: var(--panel); padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #333; }
@@ -212,7 +256,7 @@
     <div id="celebration"></div>
 
 <script>
-    // --- DATA STATE V11 ---
+    // --- DATA STATE V13 ---
     const defaultData = {
         kids: [
             { id: 'jess', name: 'Jesse', icon: '🤠', color: 'var(--jess)', points: 0, rewardVisual: '🎮', rewardName: 'Kirby Game', rewardTarget: 50 },
@@ -238,23 +282,23 @@
             { id: 28, emoji: '🚗', name: 'Wash Car', points: 10, recurrence: 14, assignees: [], isExtra: true }
         ],
         mealChores: [
-            { id: 101, emoji: 'set_table.jpg', name: 'Set Table' },
+            { id: 101, emoji: 'set_table.png', name: 'Set Table' },
             { id: 102, emoji: 'dishes.png', name: 'Wash Dishes' },
             { id: 103, emoji: 'wash table.png', name: 'Wipe Table' },
-            { id: 104, emoji: 'floor.jpg', name: 'Clean Floor' },
-            { id: 105, emoji: 'prayer.jpg', name: 'Prayer' }
+            { id: 104, emoji: 'floor.png', name: 'Clean Floor' },
+            { id: 105, emoji: 'prayer.png', name: 'Prayer' }
         ],
         pending: [],
         mealActiveKids: ['jess', 'magnolia', 'dahlia', 'duke', 'tyson', 'sutton']
     };
 
-    let appData = JSON.parse(localStorage.getItem('choreDataV11')) || defaultData;
+    let appData = JSON.parse(localStorage.getItem('choreDataV13')) || defaultData;
     let currentView = 'kids';
     let editingChoreId = null;
     let editingMealChoreId = null;
 
     function saveData() {
-        localStorage.setItem('choreDataV11', JSON.stringify(appData));
+        localStorage.setItem('choreDataV13', JSON.stringify(appData));
     }
 
     // --- VISUAL RENDER HELPERS ---
